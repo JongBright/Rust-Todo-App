@@ -5,13 +5,24 @@ use std::io::{BufRead, BufReader};
 use std::io::prelude::*;
 
 
+static TODO_FILE_PATH: &str = "/home/muream/todo.txt";
+
+static HELP: &str = "get --> Prints the todo list to the command line.
+add \"Some Text\" --> Add a new todo item.
+delete <int> --> Delete the todo with the index <int>.
+check <int> --> Check the todo with the index <int>.
+uncheck <int> --> Uncheck the todo with the index <int>.
+edit <int> \"Some Text\" --> Change the text of the todo with the index <int>.
+help --> Prints this message.";
+
+
 struct TodoList {
     todos: Vec<TodoItem>,
 }
 
 impl TodoList {
     fn new() -> TodoList {
-        TodoList::_todolist_from_file("/home/muream/todo.txt")
+        TodoList::_todolist_from_file(TODO_FILE_PATH)
     }
     
     fn _todolist_from_file(path: &str) -> TodoList{
@@ -125,43 +136,32 @@ fn main() {
     let arguments: Vec<String> = env::args().collect();
 
     if arguments.len() == 1{
-        println!("You need to pass some argumets.");
+        println!("You need to pass some arguments.");
         println!("Use`todo help` to get a list of arguments");
         return;
     }
-
-    let file_path = "/home/muream/todo.txt";
 
     match arguments[1].as_str() {
         "get" => todolist.print(),
         "add" => {
             todolist.add_item(arguments[2].clone(), false);
-            todolist.write_to_file(file_path);
+            todolist.write_to_file(TODO_FILE_PATH);
         },
         "delete" =>{
             todolist.delete_item(arguments[2].parse().unwrap());
-            todolist.write_to_file(file_path);
+            todolist.write_to_file(TODO_FILE_PATH);
         },
         "check" => {
             todolist.check_item(arguments[2].parse().unwrap());
-            todolist.write_to_file(file_path);
+            todolist.write_to_file(TODO_FILE_PATH);
         },
         "uncheck" => {
             todolist.uncheck_item(arguments[2].parse().unwrap());
-            todolist.write_to_file(file_path);
+            todolist.write_to_file(TODO_FILE_PATH);
         },
         "edit" => todolist.edit_item(arguments[2].parse().unwrap(), arguments[3].clone()),
         "help" => {
-            let help = "
-get --> Prints the todo list to the command line.
-add \"Some Text\" --> Add a new todo item.
-delete <int> --> Delete the todo with the index <int>.
-check <int> --> Check the todo with the index <int>.
-uncheck <int> --> Uncheck the todo with the index <int>.
-edit <int> \"Some Text\" --> Change the text of the todo with the index <int>.
-help --> Prints this message.
-        ";
-            println!("{}", help)
+            println!("{}", HELP)
         },
         _ => ()
     };
