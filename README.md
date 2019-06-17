@@ -9,3 +9,5 @@ it works like so:
 `todo uncheck <int>` --> Uncheck the todo with the index <int>.  
 `todo edit <int> \"Some Text\"` --> Change the text of the todo with the index <int>.  
 `todo help` --> Prints this message.  
+
+When compiling the project directly, simply replace `todo` by `cargo run`
