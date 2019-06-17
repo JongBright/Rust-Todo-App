@@ -123,6 +123,13 @@ fn main() {
     let mut todolist = TodoList::new();
 
     let arguments: Vec<String> = env::args().collect();
+
+    if arguments.len() == 1{
+        println!("You need to pass some argumets.");
+        println!("Use`todo help` to get a list of arguments");
+        return;
+    }
+
     let file_path = "/home/muream/todo.txt";
 
     match arguments[1].as_str() {
@@ -144,6 +151,18 @@ fn main() {
             todolist.write_to_file(file_path);
         },
         "edit" => todolist.edit_item(arguments[2].parse().unwrap(), arguments[3].clone()),
+        "help" => {
+            let help = "
+get --> Prints the todo list to the command line.
+add \"Some Text\" --> Add a new todo item.
+delete <int> --> Delete the todo with the index <int>.
+check <int> --> Check the todo with the index <int>.
+uncheck <int> --> Uncheck the todo with the index <int>.
+edit <int> \"Some Text\" --> Change the text of the todo with the index <int>.
+help --> Prints this message.
+        ";
+            println!("{}", help)
+        },
         _ => ()
     };
 }
